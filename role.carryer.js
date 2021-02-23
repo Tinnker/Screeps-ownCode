@@ -11,10 +11,9 @@ var roleCarryer = {
             if(creep.withdraw(sources[creep.memory.S], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[creep.memory.S]);
             }
-            /*
             if(creep.withdraw(sources[creep.memory.S], RESOURCE_ENERGY) == OK) {
                 creep.memory.S = creep.memory.S ^ 1;
-            }*/
+            }
         }
         else {
             var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -40,8 +39,8 @@ var roleCarryer = {
                         return (structure.structureType == STRUCTURE_CONTAINER)
                     }
                 });
-                if(creep.transfer(sources[1], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[1]);
+                if(creep.transfer(sources[2], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[2]);
                 }
             }
         }

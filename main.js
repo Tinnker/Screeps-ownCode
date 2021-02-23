@@ -18,7 +18,7 @@ const creepConfigs = [
     {
         role: 'carryer',
         bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 2
+        number: 3
     }, 
     {
         role: 'builder',
@@ -30,7 +30,8 @@ const creepConfigs = [
 // Check the task queue
 Spawn.prototype.work = function() { 
     // 自己已经在生成了 / 内存里没有生成队列 / 生产队列为空 就啥都不干
-    if(this.spawning || !this.memory.spawnList || this.memory.spawnList.length == 0) return
+    if(this.spawning || !this.memory.spawnList || this.memory.spawnList.length == 0) return;
+    if(this.memory.spawnList[0] == null) this.memory.spawnList.shift();
     // Creating newCreeps
     var spawnSuccess = this.mainSpawn(this.memory.spawnList[0]);
     //console.log('Try to create newCreeps ' +spawnSuccess);
