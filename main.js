@@ -104,7 +104,7 @@ module.exports.loop = function () {
             tower.attack(closestHostile);
         }
         else {
-            var repairTime = 1;
+            var repairTime = 2;
             if(!(Game.time % repairTime)) {
                 var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
