@@ -2,7 +2,7 @@ var roleCarryer = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.store[RESOURCE_ENERGY] == 0) {
+	    if(creep.store[RESOURCE_ENERGY] == 0 || creep.store.getUsedCapacity() < 50) {
             var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             if(source.length == 0) {
                 var sources = creep.room.find(FIND_STRUCTURES, {
