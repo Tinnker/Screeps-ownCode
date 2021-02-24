@@ -7,17 +7,17 @@ var roleCarryer = require('role.carryer');
 const creepConfigs = [
     {
         role: 'harvester',
-        bodys: [ WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE ],
-        number: 1
+        bodys: [ WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        number: 2
     }, 
     {
         role: 'upgrader',
-        bodys: [ WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ],
         number: 3
     },
     {
         role: 'carryer',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
         number: 3
     }, 
     {
@@ -47,7 +47,6 @@ Spawn.prototype.addTask = function(taskName) {
 // Creep generation
 Spawn.prototype.mainSpawn = function(taskName) {
     for(var num in creepConfigs) {
-        
         if(creepConfigs[num].role == taskName) {
             var newName = creepConfigs[num].role.substr(0,1) + Game.time;
             var sucCreate = Game.spawns['Spawn1'].spawnCreep(creepConfigs[num].bodys, newName,
@@ -76,10 +75,19 @@ module.exports.loop = function () {
 
 
     // Check Creeps Num
-    var checkTime = 5;
+    var checkTime = 50;
     if(!(Game.time % checkTime)) {
-        console.log(Game.creeps.length);
-        
+        var total = 0;
+        for(var i in creepConfigs) {
+            total = total + creepConfigs[i].number;
+        }
+        var Num = _.filter(Game.creeps);
+        if(total == (Num.length + Game.spawns['Spawn1'].memory.spawnList.length)) {
+            console.log('OK');
+        }
+        else {
+            console.log('ERROR '+ (Num.length + Game.spawns['Spawn1'].memory.spawnList.length));
+        }
     }
 
     // Tower mode
