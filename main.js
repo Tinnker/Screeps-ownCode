@@ -2,6 +2,7 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleCarryer = require('role.carryer');
+var roleReloader = require('role.reloader');
 
 // The creep configs
 const creepConfigs = [
@@ -13,7 +14,7 @@ const creepConfigs = [
     {
         role: 'upgrader',
         bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 1
+        number: 2
     },
     {
         role: 'carryer',
@@ -23,6 +24,11 @@ const creepConfigs = [
     {
         role: 'builder',
         bodys: [ WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ],
+        number: 2
+    },
+    {
+        role: 'reloader',
+        bodys: [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ],
         number: 2
     }
 ]
@@ -83,7 +89,7 @@ module.exports.loop = function () {
         }
         var Num = _.filter(Game.creeps);
         if(total == (Num.length + Game.spawns['Spawn1'].memory.spawnList.length)) {
-            console.log('OK');
+            //console.log('OK');
         }
         else {
             console.log('ERROR '+ (Num.length + Game.spawns['Spawn1'].memory.spawnList.length));
@@ -98,12 +104,17 @@ module.exports.loop = function () {
             tower.attack(closestHostile);
         }
         else {
-            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER ) &&
-                            (structure.hitsMax - structure.hits) > 1000
-                }
-            });
+            var repairTime = 1;
+            if(!(Game.time % repairTime)) {
+                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER ||
+                                structure.structureType == STRUCTURE_WALL ||
+                                structure.structureType == STRUCTURE_ROAD) &&
+                                (structure.hitsMax - structure.hits) > 1000
+                    }
+                });
+            }
             if(closestDamagedStructure) {
                 tower.repair(closestDamagedStructure);
             }
@@ -126,6 +137,8 @@ module.exports.loop = function () {
         if(creep.memory.role == 'carryer') {
             roleCarryer.run(creep);
         }
-        
+        if(creep.memory.role == 'reloader') {
+            roleReloader.run(creep);
+        }
     }
 }

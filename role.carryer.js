@@ -3,7 +3,7 @@ var roleCarryer = {
     /** @param {Creep} creep **/
     run: function(creep) {
 	    if(creep.store[RESOURCE_ENERGY] == 0) {
-            var source = creep.room.find(FIND_DROPPED_RESOURCES);
+            var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             if(source.length == 0) {
                 var sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
@@ -14,14 +14,13 @@ var roleCarryer = {
                     creep.moveTo(sources[0]);
                 }
             }
-            /*if(creep.withdraw(sources[creep.memory.S], RESOURCE_ENERGY) == OK) {
-                creep.memory.S = creep.memory.S ^ 1;
-            }*/
             else {
-                if(creep.pickup(source[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source[0]);
-                }
-            }
+				creep.memory.sourceID = source.id;
+				var closedSource = Game.getObjectById(creep.memory.sourceID);
+				if(creep.pickup(closedSource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(closedSource);
+				}
+			}
         }
         else {
             var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {

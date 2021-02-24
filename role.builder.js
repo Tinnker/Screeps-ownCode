@@ -3,17 +3,21 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
 	    if(creep.store[RESOURCE_ENERGY] == 0) {
-			var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-				filter: (structure) => {
-					return (structure.structureType == STRUCTURE_CONTAINER ) && 
-							structure.store[RESOURCE_ENERGY] > 0;
+			var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+			if(source.length == 0) {
+				var sources = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+					filter: (structure) => {return (structure.structureType == STRUCTURE_CONTAINER)}});
+				creep.memory.sourcesID = sources.id;
+				var closedSources = Game.getObjectById(creep.memory.sourcesID);
+				if(creep.withdraw(closedSources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(closedSources);
 				}
-			});
-			if(targets != null) {
-				creep.memory.targetID = targets.id;
-				var closedTarget = Game.getObjectById(creep.memory.targetID);
-				if(creep.withdraw(closedTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(closedTarget);
+			}
+			else {
+				creep.memory.sourceID = source.id;
+				var closedSource = Game.getObjectById(creep.memory.sourceID);
+				if(creep.pickup(closedSource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(closedSource);
 				}
 			}
 		}
