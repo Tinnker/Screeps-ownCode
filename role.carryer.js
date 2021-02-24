@@ -27,7 +27,7 @@ var roleCarryer = {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN ||
-                            structure.structureType ==  STRUCTURE_TOWER) && 
+                            structure.structureType ==  STRUCTURE_STORAGE) && 
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -42,7 +42,7 @@ var roleCarryer = {
             else {
                 var sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE)
+                        return (structure.structureType == STRUCTURE_TOWER)
                     }
                 });
                 if(creep.transfer(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
