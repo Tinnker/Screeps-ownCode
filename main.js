@@ -17,8 +17,8 @@ const creepConfigs = [
     },
     {
         role: 'carryer',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 3
+        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        number: 2
     }, 
     {
         role: 'builder',
