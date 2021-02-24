@@ -3,24 +3,32 @@ var roleCarryer = {
     /** @param {Creep} creep **/
     run: function(creep) {
 	    if(creep.store[RESOURCE_ENERGY] == 0) {
-            var sources = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER)
+            var source = creep.room.find(FIND_DROPPED_RESOURCES);
+            if(source.length == 0) {
+                var sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER)
+                    }
+                });
+                if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[0]);
                 }
-            });
-            if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
             }
             /*if(creep.withdraw(sources[creep.memory.S], RESOURCE_ENERGY) == OK) {
                 creep.memory.S = creep.memory.S ^ 1;
             }*/
+            else {
+                if(creep.pickup(source[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source[0]);
+                }
+            }
         }
         else {
             var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN ||
-                            structure.structureType == Tombstone ||
+                            structure.structureType ==  STRUCTURE_TOWER ||
                             structure.structureType == STRUCTURE_STORAGE ) && 
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }

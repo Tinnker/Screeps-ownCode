@@ -12,8 +12,8 @@ const creepConfigs = [
     }, 
     {
         role: 'upgrader',
-        bodys: [ WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 3
+        bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        number: 1
     },
     {
         role: 'carryer',
@@ -91,21 +91,22 @@ module.exports.loop = function () {
     }
 
     // Tower mode
-    var tower = Game.getObjectById('602b512566bfca3cc41aa321');
+    var tower = Game.getObjectById('6036204f40897c13006a0f94');
     if(tower) {
-        var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => {return structure.structureType == STRUCTURE_CONTAINER ||
-                structure.structureType == STRUCTURE_ROAD &&
-                structure.hits < structure.hitsMax
-            }
-        });
-        if(closestDamagedStructure) {
-            tower.repair(closestDamagedStructure);
-        }
-
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if(closestHostile) {
             tower.attack(closestHostile);
+        }
+        else {
+            var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTAINER ) &&
+                            (structure.hitsMax - structure.hits) > 1000
+                }
+            });
+            if(closestDamagedStructure) {
+                tower.repair(closestDamagedStructure);
+            }
         }
     }
 
