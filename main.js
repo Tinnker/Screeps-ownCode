@@ -7,7 +7,7 @@ var roleCarryer = require('role.carryer');
 const creepConfigs = [
     {
         role: 'harvester',
-        bodys: [ WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE ],
+        bodys: [ WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE ],
         number: 1
     }, 
     {
@@ -17,7 +17,7 @@ const creepConfigs = [
     },
     {
         role: 'carryer',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
         number: 3
     }, 
     {
@@ -29,20 +29,17 @@ const creepConfigs = [
 
 // Check the task queue
 Spawn.prototype.work = function() { 
-    // 自己已经在生成了 / 内存里没有生成队列 / 生产队列为空 就啥都不干
+    // Do nothing if spawning or nothing in list
     if(this.spawning || !this.memory.spawnList || this.memory.spawnList.length == 0) return;
     if(this.memory.spawnList[0] == null) this.memory.spawnList.shift();
     // Creating newCreeps
     var spawnSuccess = this.mainSpawn(this.memory.spawnList[0]);
-    //console.log('Try to create newCreeps ' +spawnSuccess);
     // Remove task if finished
     if(spawnSuccess) this.memory.spawnList.shift();
 }
 
-// Pull tasks into the queue
+// Push tasks into the queue
 Spawn.prototype.addTask = function(taskName) { 
-    
-    // 任务加入队列
     this.memory.spawnList.push(taskName);
     return this.memory.spawnList.length - 1;
 }
@@ -77,15 +74,15 @@ module.exports.loop = function () {
     //  Create newCreeps
     Game.spawns['Spawn1'].work();
 
-    /*
+
     // Check Creeps Num
     var checkTime = 5;
     if(!(Game.time % checkTime)) {
-        console.log("hello!");
+        console.log(Game.creeps.length);
+        
     }
-    */
 
-    //Tower mode
+    // Tower mode
     var tower = Game.getObjectById('602b512566bfca3cc41aa321');
     if(tower) {
         var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -105,7 +102,7 @@ module.exports.loop = function () {
     }
 
 
-    //run creeps
+    // Run creeps
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         if(creep.memory.role == 'harvester') {

@@ -33,7 +33,6 @@ var roleCarryer = {
                     creep.moveTo(closedTarget);
                 }
             }
-            
             else {
                 var sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
