@@ -5,11 +5,11 @@ var roleUpgrader = {
         if(creep.store[RESOURCE_ENERGY] == 0) {
 			var sources = creep.room.find(FIND_STRUCTURES, {
 				filter: (structure) => {
-					return (structure.structureType == STRUCTURE_CONTAINER)
+					return (structure.structureType == STRUCTURE_STORAGE)
 				}
 			});
-			if(creep.withdraw(sources[2], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[2]);
+			if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(sources[0]);
 			}
 			/*
 			var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {

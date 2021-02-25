@@ -6,7 +6,7 @@ var roleHarvester = {
         var target = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {return structure.structureType == STRUCTURE_CONTAINER}});
         if(creep.harvest(sources[creep.memory.S]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[creep.memory.S]);
+            creep.moveTo(target[creep.memory.S]);
         }
 	}
 };

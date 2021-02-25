@@ -2,14 +2,14 @@ var roleReloader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.store.getFreeCapacity() > 0) {
+	    if(creep.store.getUsedCapacity() < 50) {
             var sources = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER)
+                    return (structure.structureType == STRUCTURE_STORAGE)
                 }
             });
-            if(creep.withdraw(sources[2], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[2]);
+            if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0]);
             }
         }
         
@@ -28,14 +28,6 @@ var roleReloader = {
                 }
             }
             else {
-                var sources = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE)
-                    }
-                });
-                if(creep.transfer(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[0]);
-                }
             }
         }
 	}

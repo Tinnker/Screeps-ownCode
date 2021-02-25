@@ -2,9 +2,20 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+		if(creep.store[RESOURCE_ENERGY] == 0) {
+			var sources = creep.room.find(FIND_STRUCTURES, {
+				filter: (structure) => {
+					return (structure.structureType == STRUCTURE_STORAGE)
+				}
+			});
+			if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(sources[0]);
+			}
+		}
+		/*
 	    if(creep.store[RESOURCE_ENERGY] == 0) {
 			var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-			if(source.length == 0) {
+			if(source == null) {
 				var sources = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 					filter: (structure) => {
 						return (structure.structureType == STRUCTURE_CONTAINER
@@ -24,7 +35,7 @@ var roleBuilder = {
 				}
 			}
 		}
-		
+		*/
 		else {
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if(targets.length == 0) {

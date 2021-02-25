@@ -1,9 +1,10 @@
-var roleMidtransporter = {
+var roleFiller = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
 	    if(creep.store[RESOURCE_ENERGY] == 0 || creep.store.getUsedCapacity() < 50) {
-            var sources = creep.room.find(STRUCTURE_STORAGE);
+            var sources = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {return (structure.structureType == STRUCTURE_STORAGE)}});
             if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[0]);
             }
@@ -32,4 +33,4 @@ var roleMidtransporter = {
 	}
 };
 
-module.exports = roleMidtransporter;
+module.exports = roleFiller;
