@@ -14,12 +14,12 @@ const creepConfigs = [
     {
         role: 'upgrader',
         bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 2
+        number: 3
     },
     {
         role: 'carryer',
         bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 2
+        number: 4
     }, 
     {
         role: 'builder',
@@ -29,7 +29,7 @@ const creepConfigs = [
     {
         role: 'reloader',
         bodys: [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ],
-        number: 2
+        number: 1
     }
 ]
 
@@ -54,12 +54,15 @@ Spawn.prototype.addTask = function(taskName) {
 Spawn.prototype.mainSpawn = function(taskName) {
     for(var num in creepConfigs) {
         if(creepConfigs[num].role == taskName) {
-            var newName = creepConfigs[num].role.substr(0,1) + Game.time;
+            var newName = creepConfigs[num].role.substr(0,1).toUpperCase() + '-' + Game.time;
             var sucCreate = Game.spawns['Spawn1'].spawnCreep(creepConfigs[num].bodys, newName,
-            {memory: {role: creepConfigs[num].role, S: this.memory.S}});
+            {memory: {role: creepConfigs[num].role, S: this.memory.S, C: this.memory.C}});
             if(sucCreate == 0) {
                 if(taskName == 'harvester') {
                     this.memory.S = this.memory.S ^ 1;
+                }
+                if(taskName == 'carryer') {
+                    this.memory.C = this.memory.C ^ 1;
                 }
                 return true;
             }
@@ -104,19 +107,21 @@ module.exports.loop = function () {
             tower.attack(closestHostile);
         }
         else {
-            var repairTime = 1;
-            if(!(Game.time % repairTime)) {
+            var repairTime = 2;
+            if((Game.time % repairTime)) {
+                
                 var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER ||
-                                structure.structureType == STRUCTURE_WALL ||
-                                structure.structureType == STRUCTURE_ROAD) &&
+                                ((structure.structureType == STRUCTURE_WALL ||
+                                structure.structureType == STRUCTURE_RAMPART) && 
+                                structure.hits < 1000000)) &&
                                 (structure.hitsMax - structure.hits) > 1000
                     }
                 });
             }
             if(closestDamagedStructure) {
-                tower.repair(closestDamagedStructure);
+                tower.repair(closestDamagedStructure)
             }
         }
     }

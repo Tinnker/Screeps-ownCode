@@ -8,8 +8,8 @@ var roleReloader = {
                     return (structure.structureType == STRUCTURE_CONTAINER)
                 }
             });
-            if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            if(creep.withdraw(sources[2], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[2]);
             }
         }
         

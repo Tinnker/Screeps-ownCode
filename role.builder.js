@@ -6,7 +6,10 @@ var roleBuilder = {
 			var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
 			if(source.length == 0) {
 				var sources = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-					filter: (structure) => {return (structure.structureType == STRUCTURE_CONTAINER)}});
+					filter: (structure) => {
+						return (structure.structureType == STRUCTURE_CONTAINER
+								|| structure.structureType == STRUCTURE_STORAGE)
+								&& structure.store[RESOURCE_ENERGY] > 0 }});
 				creep.memory.sourcesID = sources.id;
 				var closedSources = Game.getObjectById(creep.memory.sourcesID);
 				if(creep.withdraw(closedSources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -27,9 +30,8 @@ var roleBuilder = {
 			if(targets.length == 0) {
 				const targets = creep.room.find(FIND_STRUCTURES, {
 					filter: (structure) => {
-						return (structure.structureType == STRUCTURE_CONTAINER ||
-								structure.structureType == STRUCTURE_ROAD) &&
-								structure.hits < structure.hitsMax
+						return structure.structureType == STRUCTURE_ROAD &&
+                                (structure.hitsMax - structure.hits) > 1000
 					}
 				});
 				

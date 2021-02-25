@@ -3,6 +3,15 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function(creep) {
         if(creep.store[RESOURCE_ENERGY] == 0) {
+			var sources = creep.room.find(FIND_STRUCTURES, {
+				filter: (structure) => {
+					return (structure.structureType == STRUCTURE_CONTAINER)
+				}
+			});
+			if(creep.withdraw(sources[2], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(sources[2]);
+			}
+			/*
 			var targets = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 				filter: (structure) => {
 					return (structure.structureType == STRUCTURE_CONTAINER ) && 
@@ -15,7 +24,7 @@ var roleUpgrader = {
 				if(creep.withdraw(closedTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(closedTarget);
 				}
-			}
+			}*/
 		}
         else {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
