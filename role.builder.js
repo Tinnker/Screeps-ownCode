@@ -2,7 +2,7 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-		if(creep.store[RESOURCE_ENERGY] == 0) {
+		if(creep.store[RESOURCE_ENERGY] == 0 || creep.store.getUsedCapacity() < 50) {
 			var sources = creep.room.find(FIND_STRUCTURES, {
 				filter: (structure) => {
 					return (structure.structureType == STRUCTURE_STORAGE)
@@ -12,6 +12,7 @@ var roleBuilder = {
 				creep.moveTo(sources[0]);
 			}
 		}
+
 		/*
 	    if(creep.store[RESOURCE_ENERGY] == 0) {
 			var source = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
@@ -37,6 +38,7 @@ var roleBuilder = {
 		}
 		*/
 		else {
+			
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if(targets.length == 0) {
 				const targets = creep.room.find(FIND_STRUCTURES, {
@@ -47,10 +49,9 @@ var roleBuilder = {
 				});
 				
 				targets.sort((a,b) => a.hits - b.hits);
-				
 				if(targets.length > 0) {
-					if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(targets[0]);
+					if(creep.repair(targets[1]) == ERR_NOT_IN_RANGE) {
+						creep.moveTo(targets[1]);
 					}
 				}
 			}

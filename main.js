@@ -15,11 +15,11 @@ const creepConfigs = [
     {
         role: 'upgrader',
         bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 3
+        number: 2
     },
     {
         role: 'carryer',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
         number: 4
     }, 
     {
@@ -33,9 +33,9 @@ const creepConfigs = [
         number: 1
     },
     {
-        role: 'midtransporter',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 1
+        role: 'filler',
+        bodys: [ CARRY, CARRY, MOVE, MOVE ],
+        number: 2
     }
 ]
 
@@ -101,7 +101,7 @@ module.exports.loop = function () {
             //console.log('OK');
         }
         else {
-            console.log('ERROR '+ (Num.length + Game.spawns['Spawn1'].memory.spawnList.length));
+            console.log('ERROR '+ total +' '+(Num.length + Game.spawns['Spawn1'].memory.spawnList.length));
         }
     }
 
@@ -113,15 +113,16 @@ module.exports.loop = function () {
             tower.attack(closestHostile);
         }
         else {
-            var repairTime = 3;
+            var repairTime = 1;
             if(!(Game.time % repairTime)) {
                 
                 var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER ||
-                                ((structure.structureType == STRUCTURE_WALL ||
-                                structure.structureType == STRUCTURE_RAMPART) && 
-                                structure.hits < 1000000)) &&
+                                ((structure.structureType == STRUCTURE_WALL 
+                                    || structure.structureType == STRUCTURE_RAMPART
+                                    ) && 
+                                structure.hits < 500000)) &&
                                 (structure.hitsMax - structure.hits) > 1000
                     }
                 });
