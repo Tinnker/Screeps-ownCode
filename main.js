@@ -9,22 +9,22 @@ var roleFiller = require('role.filler');
 const creepConfigs = [
     {
         role: 'harvester',
-        bodys: [ WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE ],
         number: 2
     }, 
     {
         role: 'upgrader',
-        bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
         number: 2
     },
     {
         role: 'carryer',
-        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
-        number: 4
+        bodys: [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
+        number: 2
     }, 
     {
         role: 'builder',
-        bodys: [ WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ],
+        bodys: [ WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE ],
         number: 2
     },
     {
@@ -34,7 +34,7 @@ const creepConfigs = [
     },
     {
         role: 'filler',
-        bodys: [ CARRY, CARRY, MOVE, MOVE ],
+        bodys: [ CARRY, CARRY, MOVE, MOVE],
         number: 2
     }
 ]
@@ -119,10 +119,11 @@ module.exports.loop = function () {
                 var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER ||
+                                structure.structureType == STRUCTURE_ROAD ||
                                 ((structure.structureType == STRUCTURE_WALL 
-                                    || structure.structureType == STRUCTURE_RAMPART
+                                   || structure.structureType == STRUCTURE_RAMPART
                                     ) && 
-                                structure.hits < 500000)) &&
+                                structure.hits < 100000)) &&
                                 (structure.hitsMax - structure.hits) > 1000
                     }
                 });
