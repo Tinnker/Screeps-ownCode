@@ -106,9 +106,9 @@ module.exports.loop = function () {
     }
 
     // Tower mode
-    var tower = Game.getObjectById('6036204f40897c13006a0f94');
-    if(tower) {
-        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    var tower1 = Game.getObjectById('6036204f40897c13006a0f94');
+    if(tower1) {
+        var closestHostile = tower1.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if(closestHostile) {
             tower.attack(closestHostile);
         }
@@ -116,10 +116,9 @@ module.exports.loop = function () {
             var repairTime = 1;
             if(!(Game.time % repairTime)) {
                 
-                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                var closestDamagedStructure = tower1.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_CONTAINER ||
-                                structure.structureType == STRUCTURE_ROAD ||
                                 ((structure.structureType == STRUCTURE_WALL 
                                    || structure.structureType == STRUCTURE_RAMPART
                                     ) && 
@@ -129,11 +128,37 @@ module.exports.loop = function () {
                 });
             }
             if(closestDamagedStructure) {
-                tower.repair(closestDamagedStructure)
+                tower1.repair(closestDamagedStructure)
             }
         }
     }
 
+    var tower2 = Game.getObjectById('603cf386327d07fe48bcca52');
+    if(tower2) {
+        var closestHostile = tower1.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(closestHostile) {
+            tower.attack(closestHostile);
+        }
+        else {
+            var repairTime = 1;
+            if(!(Game.time % repairTime)) {
+                
+                var closestDamagedStructure = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_ROAD ||
+                                ((structure.structureType == STRUCTURE_WALL 
+                                   || structure.structureType == STRUCTURE_RAMPART
+                                    ) && 
+                                structure.hits < 100000)) &&
+                                (structure.hitsMax - structure.hits) > 1000
+                    }
+                });
+            }
+            if(closestDamagedStructure) {
+                tower2.repair(closestDamagedStructure)
+            }
+        }
+    }
 
     // Run creeps
     for(var name in Game.creeps) {
